@@ -1,3 +1,4 @@
+#library
 library(shiny)
 library(dplyr)
 library(tidyverse)
@@ -5,6 +6,7 @@ library(plotly)
 library(readr)
 library(ggplot2)
 
+#values
 co2_emissions_data <- read.csv("https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv")
 View(co2_emissions_data)
 

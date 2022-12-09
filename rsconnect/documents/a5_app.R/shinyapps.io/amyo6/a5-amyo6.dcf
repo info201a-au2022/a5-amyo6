@@ -1,0 +1,14 @@
+name: a5-amyo6
+title: a5-amyo6
+username:
+account: amyo6
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7859199
+bundleId: 6617473
+url: https://amyo6.shinyapps.io/a5-amyo6/
+when: 1670618885.52517
+lastSyncTime: 1670618885.52519
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: .Rapp.history|a5_server.R|a5_ui.R|LICENSE|README.md

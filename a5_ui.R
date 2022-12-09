@@ -1,9 +1,11 @@
+#library
 library(shiny)
 library(dplyr)
 library(tidyverse)
 library(plotly)
 library(ggplot2)
 
+#data
 co2_emissions_data <- read.csv("https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-data.csv")
 view(co2_emissions_data)
 
@@ -29,6 +31,7 @@ color_input <- selectInput(
 )
   
 
+#pages
 Intro_panel <- tabPanel(
   "Introduction",
   titlePanel(strong("Introduction", align = "center")),
