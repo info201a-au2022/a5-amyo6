@@ -57,28 +57,16 @@ print(countries_co2_growth)
 server <- function(input,output) {
   
   
-  output$chart_one <- renderPlotly({
+  output$co2_chart <- renderPlotly({
     
-    chart1 <- ggplot(countries_by_co2, aes(year,co2)) +
-      geom_point()+
+    chart1 <- ggplot(data = countries_by_co2) +
+      geom_point(mapping = aes(x= year, y= co2))+
       labs(
         x = "Year",
-        y = "Co2 Emissions (in Metric Tons)"
-      ) +
-      ggtitle("The Change in CO2 Across the Globe")
+        y = "Co2 Emissions (in Metric Tons)",
+        title = "Co2 Emissions Across the Globe"
+      ) 
     chart1
-  })
-  
-  output$chart_two <- renderPlotly({
-    
-    chart2 <- ggplot(countries_by_co2, aes(year,co2_growth_prct)) +
-      geom_col()+
-      labs(
-        x = "Year",
-        y = "Co2 Growth in Percentages"
-      ) +
-        ggtitle("Change in Co2 by Percent")
-    chart2
   })
   
 #Second Page Stuff
@@ -89,11 +77,11 @@ server <- function(input,output) {
   
   scatterPlot <- reactive({
     plotData <- revised_co2_data%>%
-      filter(country %in% input$Country)
+      filter(country == input$country_options)
     
     
     ggplot(plotData, aes(x= year,y= co2_per_capita)) +
-      geom_point(color = input$color) +
+      geom_point(color = input$color_options) +
       labs(
         x= "Year",
         y= "Co2 Emissions (Metric Tons per Capita)",
@@ -103,7 +91,7 @@ server <- function(input,output) {
         so you can see nationally Co2 differences as well.")
     })
     
-    output$countryPlot <- renderPlotly({
+    output$scatterplotgraph <- renderPlotly({
       scatterPlot()
     })
   }
