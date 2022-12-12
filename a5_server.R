@@ -24,10 +24,18 @@ view(co2percapita_data )
 
 # What are the differences in co2/co2percapita/co2 growth by country? (#1 value)
 countries_by_co2 <- co2_emissions_data%>%
-  select(country, year, co2, co2_per_capita,co2_growth_prct)%>%
+  select(country, year, co2, co2_per_capita)%>%
   group_by(country) %>%
   filter(country == "World")
 View(countries_by_co2)
+
+#What was the highest co2 recorded for the US in 2021?
+us_co2_growth <- co2_emissions_data%>%
+  select(country,co2,year)%>%
+  filter(country == "United States")%>%
+  filter(year == "2021")%>%
+  filter(co2 == max(co2, na.rm = TRUE))%>%
+  pull(co2)
 
 # what are the highest averages of individual contribution to CO2 levels (per capita) in 15 countries, currently? (#2 value)
 top_countries_co2percapita_2021 <- revised_co2_data %>%
@@ -35,23 +43,15 @@ top_countries_co2percapita_2021 <- revised_co2_data %>%
   filter(year == "2021")%>%
   arrange(desc(co2_per_capita))%>%
   head(15)
-print(top_countries_co2percapita_2021)
 
 # what were the highest averages of individual contribution to CO2 levels (per capita) in 15 countries, 100 years ago? (#3 value)
-top_countries_co2percapita_1921 <- revised_co2_data%>%
+top_countries_co2percapita_1921 <- co2_emissions_data %>%
+  select(country, year, co2,co2_per_capita)%>%
   group_by(country) %>%
   filter(year == "1921")%>%
   arrange(desc(co2_per_capita))%>%
   head(15)
-print(top_countries_co2percapita_1921)
 
-#What are the highest Co2 growth percentages for each country this past year? (#4th value)
-countries_co2_growth <- revised_co2_data_v2%>%
-  group_by(country) %>%
-  filter(year == "2021")%>%
-  arrange(desc(co2_growth_prct))%>%
-  head(15)
-print(countries_co2_growth)
 
 #Plot/Widget Stuff 
 server <- function(input,output) {
@@ -77,11 +77,11 @@ server <- function(input,output) {
   
   scatterPlot <- reactive({
     plotData <- revised_co2_data%>%
-      filter(country == input$country_options)
+      filter(country %in% input$Country)
     
     
-    ggplot(plotData, aes(x= year,y= co2_per_capita)) +
-      geom_point(color = input$color_options) +
+    ggplot(data = plotData, aes(x= year,y= co2_per_capita)) +
+      geom_point(color = input$color) +
       labs(
         x= "Year",
         y= "Co2 Emissions (Metric Tons per Capita)",
@@ -91,7 +91,7 @@ server <- function(input,output) {
         so you can see nationally Co2 differences as well.")
     })
     
-    output$scatterplotgraph <- renderPlotly({
+    output$countryPlot <- renderPlotly({
       scatterPlot()
     })
   }
